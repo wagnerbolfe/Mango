@@ -32,7 +32,7 @@ namespace Web.Services
             });
         }
 
-        public async Task<ResponseDto> GetCartByUserIdAsnyc(string userId)
+        public async Task<ResponseDto> GetCartByUserIdAsync(string userId)
         {
             return await _baseService.SendAsync(new RequestDto()
             {

@@ -1,0 +1,130 @@
+﻿@model CartDto
+@if (Model.CartHeader != null && Model.CartDetails.Any())
+{
+<form method="post" asp-action="EmailCart">
+    <br />
+    <input asp-for="CartHeader.UserId" hidden />
+    <input asp-for="CartHeader.CartHeaderId" hidden />
+    <div class="">
+        <div class="card border mt-4 container">
+            <div class="card-header d-flex justify-content-between align-items-center py-3" style="background-color: transparent">
+                <div class="col-6">
+                    <h3 class="pt-1"><i class="bi bi-cart"></i> &nbsp; Shopping Cart</h3>
+                </div>
+                <div class="col-6 text-end">
+                    <a asp-action="Index" asp-controller="Home" class="btn btn-success" 
+                       style="--bs-btn-padding-y: .70rem; --bs-btn-padding-x: 1.2rem; --bs-btn-font-size: 1.2rem;">Continue Shopping
+                    </a>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class=" d-none d-lg-block">
+                    <div class="row">
+                        <div class="col-lg-2">
+                        </div>
+                        <div class="col-lg-5">
+                            Product Details
+                        </div>
+                        <div class="col-lg-2">
+                            Price
+                        </div>
+                        <div class="col-lg-2">
+                            Count
+                        </div>
+                        <div class="col-lg-1">
+                        </div>
+                    </div>
+                </div>
+                <hr />
+
+                @foreach (var cartObj in Model.CartDetails)
+                {
+                    <div class="row h-100">
+                        <div class="col-4 col-md-2 text-center py-2">
+                            <img src="@cartObj.Product.ImageUrl" class="rounded" width="100%" alt="" />
+                        </div>
+                        <div class="col-8 col-md-5 d-flex flex-column justify-content-center">
+                            <h4>@cartObj.Product.Name</h4>
+                            <div style="font-size:13px;">@Html.Raw(cartObj.Product.Description)</div>
+                        </div>
+                        <div class="col-3 col-md-2 d-flex justify-content-center align-items-center">
+                            <span style="font-size:20px;">@($"{cartObj.Product.Price:c}") </span>
+                        </div>
+                        <div class="col-3 col-md-2 d-flex justify-content-center align-items-center">
+                            <span style="font-size:20px;"> @cartObj.Count</span>
+                        </div>
+                        <div class="col-2 col-lg-1 d-flex justify-content-center align-items-center">
+                            <a asp-action="Remove" asp-route-cartDetailsId="@cartObj.CartDetailsId" class="btn btn-lg btn-danger">
+                                <i class="bi bi-trash-fill"></i>
+                            </a>
+                        </div>
+                    </div>
+                }
+                <hr />
+                <div class="row">
+                    <div class="col-6">
+                        @if (string.IsNullOrEmpty(Model.CartHeader.CouponCode))
+                        {
+                            <div class="row g-3 align-items-center px-lg-3 py-2">
+                                <div class="col-auto">
+                                    <label for="couponCode" class="col-form-label">Coupon:</label>
+                                </div>
+                                <div class="col-auto">
+                                    <input asp-for="CartHeader.CouponCode" id="couponCode" class="form-control" aria-describedby="couponTag" />
+                                </div>
+                                <div class="col-auto">
+                                    <span id="couponTag" class="form-text">
+                                        <button type="submit" asp-action="ApplyCoupon" class="btn btn-sm btn-success"> Apply </button>
+                                    </span>
+                                </div>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="row g-3 align-items-center px-lg-3 pt-2">
+                                <div class="col-auto">
+                                        <label for="inputPassword6" class="col-form-label">Coupon:</label>
+                                </div>
+                                <div class="col-auto">
+                                    <input asp-for="CartHeader.CouponCode" id="inputPassword6" class="form-control" aria-describedby="passwordHelpInline" />
+                                </div>
+                                <div class="col-auto">
+                                    <span id="passwordHelpInline" class="form-text">
+                                        <button type="submit" asp-action="RemoveCoupon" class="btn btn-sm btn-success"> Remove </button>
+                                    </span>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                    <div class="col-6 text-end">
+                        <span class="text-danger" style="font-size:21px;">  Order Total : @($"{Model.CartHeader.CartTotal:c}") <br /></span>
+                        @if (Model.CartHeader.Discount > 0)
+                        {
+                                <span class="text-success"> Order Discount : @($"{Model.CartHeader.Discount:c}") </span>
+                        }
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer d-flex justify-content-end gap-3">
+                <div class="col-3">
+                    <button type="submit" class="btn btn-outline-danger form-control">Email Cart</button>
+                </div>
+                <div class="col-3">
+                    <a asp-action="Checkout" class="btn btn-success form-control">Looks Good? </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+}
+else{
+    <div class="d-flex justify-content-center p-5">
+        <div class="jumbotron">
+            <h1 class="display-5">Please add items to cart.</h1>
+            <hr class="my-4">
+            <p class="lead">
+                <a asp-controller="Home" asp-action="Index" class="btn btn-primary btn-lg form-control">Go Home</a>
+            </p>
+        </div>
+    </div>
+}

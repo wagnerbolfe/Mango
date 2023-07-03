@@ -6,19 +6,21 @@ using System.Threading.Tasks;
 using System;
 using Web.Services;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Cors.Infrastructure;
 using System.Diagnostics;
 using System.Linq;
+using IdentityModel;
 
 namespace Web.Controllers
 {
     public class HomeController : Controller
     {
         private readonly IProductService _productService;
+        private readonly ICartService _cartService;
 
-        public HomeController(IProductService productService)
+        public HomeController(IProductService productService, ICartService cartService)
         {
             _productService = productService;
+            _cartService = cartService;
         }
 
         public async Task<IActionResult> Index()
@@ -58,43 +60,43 @@ namespace Web.Controllers
             return View(model);
         }
 
-        //[Authorize]
-        //[HttpPost]
-        //[ActionName("ProductDetails")]
-        //public async Task<IActionResult> ProductDetails(ProductDto productDto)
-        //{
-        //    CartDto cartDto = new CartDto()
-        //    {
-        //        CartHeader = new CartHeaderDto
-        //        {
-        //            UserId = User.Claims.Where(u => u.Type == JwtClaimTypes.Subject)?.FirstOrDefault()?.Value
-        //        }
-        //    };
+        [Authorize]
+        [HttpPost]
+        [ActionName("ProductDetails")]
+        public async Task<IActionResult> ProductDetails(ProductDto productDto)
+        {
+            var cartDto = new CartDto()
+            {
+                CartHeader = new CartHeaderDto
+                {
+                    UserId = User.Claims.FirstOrDefault(u => u.Type == JwtClaimTypes.Subject)?.Value
+                }
+            };
 
-        //    CartDetailsDto cartDetails = new CartDetailsDto()
-        //    {
-        //        Count = productDto.Count,
-        //        ProductId = productDto.ProductId,
-        //    };
+            var cartDetails = new CartDetailsDto()
+            {
+                Count = productDto.Count,
+                ProductId = productDto.ProductId,
+            };
 
-        //    List<CartDetailsDto> cartDetailsDtos = new() { cartDetails };
-        //    cartDto.CartDetails = cartDetailsDtos;
+            List<CartDetailsDto> cartDetailsDtos = new() { cartDetails };
+            cartDto.CartDetails = cartDetailsDtos;
 
-        //    ResponseDto? response = await _cartService.UpsertCartAsync(cartDto);
+            var response = await _cartService.UpsertCartAsync(cartDto);
 
-        //    if (response != null && response.IsSuccess)
-        //    {
-        //        TempData["success"] = "Item has been added to the Shopping Cart";
-        //        return RedirectToAction(nameof(Index));
-        //    }
-        //    else
-        //    {
-        //        TempData["error"] = response?.Message;
-        //    }
+            if (response is { IsSuccess: true })
+            {
+                TempData["success"] = "Item has been added to the Shopping Cart";
 
-        //    return View(productDto);
-        //}
+                return RedirectToAction(nameof(Index));
+            }
+            else
+            {
+                TempData["error"] = response?.Message;
+            }
 
+            return View(productDto);
+        }
 
         public IActionResult Privacy()
         {

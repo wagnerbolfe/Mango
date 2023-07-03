@@ -165,8 +165,7 @@ namespace ShoppingCartAPI.Controllers
         {
             try
             {
-                var cartDetails = _db.CartDetails
-                   .First(u => u.CartDetailsId == cartDetailsId);
+                var cartDetails = _db.CartDetails.First(u => u.CartDetailsId == cartDetailsId);
 
                 var totalCountofCartItem = _db.CartDetails.Count(u => u.CartHeaderId == cartDetails.CartHeaderId);
                 _db.CartDetails.Remove(cartDetails);
