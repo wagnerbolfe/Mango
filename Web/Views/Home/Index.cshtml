@@ -1,8 +1,45 @@
-﻿@{
+﻿@model IEnumerable<ProductDto>
+@{
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="d-flex justify-content-center p-5">
+    <div class="jumbotron">
+        <h1 class="display-4">Hello, world!</h1>
+        <p class="lead">This is a simple hero unit, a simple jumbotron-style component for calling extra attention to featured content or information.</p>
+        <hr class="my-4">
+        <p>It uses utility classes for typography and spacing to space content out within the larger container.</p>
+        <p class="lead">
+            <a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a>
+        </p>
+    </div>
 </div>
+
+<form>
+    <div class="row">
+        @foreach (var product in Model)
+        {
+            <div class="col-12 col-md-6 col-lg-3">
+                <div class="p-0 my-3 border rounded">
+                    <div class="card">
+                        <h3 class="card-title text-center py-2">@product.Name</h3>
+                                <img src="@product.ImageUrl" class="card-body rounded-5" alt="">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between py-2">
+                                <span class="text-danger" style="font-size:20px;">@($"{product.Price:c}")</span>
+                                <span class="badge bg-warning text-white p-2">@product.CategoryName</span>
+                            </div>
+                            <p class="card-text">@Html.Raw(product.Description)</p>
+                            <div class="row">
+                                <div class="col">
+                                    <a asp-action="ProductDetails" asp-route-productId="@product.ProductId"
+                                       class="btn btn-success form-control">Details</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</form>

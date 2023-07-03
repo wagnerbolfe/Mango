@@ -1,12 +1,10 @@
-﻿@using Web.Utility
-@using Microsoft.AspNetCore.Mvc.TagHelpers
-@model IEnumerable<CouponDto>
+﻿@model IEnumerable<ProductDto>
 
 <div class="card shadow border-0 mt-4">
     <div class="card-header bg-secondary bg-gradient ml-0 py-3">
         <div class="row">
             <div class="col-12 text-center">
-                <h1 class="text-white">Coupons List</h1>
+                <h1 class="text-white">Products List</h1>
             </div>
         </div>
     </div>
@@ -14,25 +12,22 @@
         <div class="row pb-3">
             <div class="col-6">
             </div>
-            @if (User.IsInRole(StartDetail.RoleAdmin))
-            {
-                <div class="col-6 text-end">
-                    <a asp-action="CouponCreate" class="btn btn-outline-primary"><i class="bi bi-plus-square"></i> Create New Coupon</a>
+            <div class="col-6 text-end">
+                <a asp-action="ProductCreate" class="btn btn-outline-primary"><i class="bi bi-plus-square"></i> Create New Product</a>
 
-                </div>
-            }
+            </div>
         </div>
         <table class="table">
             <thead>
             <tr>
                 <th>
-                    Coupon Code
+                    Name
                 </th>
                 <th>
-                    Discount Amount
+                    Category Name
                 </th>
                 <th>
-                    Minimum Amount
+                    Price
                 </th>
                 <th></th>
             </tr>
@@ -42,16 +37,19 @@
                 {
                     <tr>
                         <td class="align-middle">
-                             @item.CouponCode
+                            @item.Name
                         </td>
                         <td class="align-middle">
-                             @((item.DiscountAmount).ToString("c"))
+                            @item.CategoryName
                         </td>
                         <td class="align-middle">
-                            @((item.MinAmount).ToString("c"))
+                            @((item.Price).ToString("c"))
                         </td>
-                        <td class="d-flex justify-content-end">
-                            <a asp-action="CouponDelete" asp-route-couponId="@item.CouponId" class="btn btn-danger">
+                        <td class="d-flex justify-content-end gap-2">
+                            <a class="btn btn-success" asp-action="ProductEdit" asp-route-productId="@item.ProductId">
+                                <i class="bi bi-pencil-square"></i>
+                            </a>
+                            <a class="btn btn-danger" asp-action="ProductDelete" asp-route-productId="@item.ProductId">
                                 <i class="bi bi-trash"></i>
                             </a>
                         </td>

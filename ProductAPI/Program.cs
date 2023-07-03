@@ -1,8 +1,5 @@
 using System;
 using System.Linq;
-using CouponAPI;
-using CouponAPI.Data;
-using CouponAPI.Extensions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
@@ -10,12 +7,15 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using ProductAPI;
+using ProductAPI.Data;
+using ProductAPI.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddDbContext<AppDbContext>(options =>
+builder.Services.AddDbContext<AppDbContext>(option =>
 {
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+    option.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 
 builder.Services.AddSingleton(MappingConfig.RegisterMaps().CreateMapper());
@@ -47,8 +47,7 @@ builder.Services.AddSwaggerGen(option =>
         }
     });
 });
-
-builder.AddAppAuthentication();
+builder.AddAppAuthetication();
 
 builder.Services.AddAuthorization();
 
@@ -59,26 +58,25 @@ app.UseSwaggerUI(c =>
 {
     if (!app.Environment.IsDevelopment())
     {
-        c.SwaggerEndpoint("/swagger/v1/swagger.json", "Cart API");
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "Product API");
         c.RoutePrefix = string.Empty;
     }
 });
 
 app.UseHttpsRedirection();
-
 app.UseAuthentication();
 app.UseAuthorization();
-
+app.UseStaticFiles();
 app.MapControllers();
-
 ApplyMigration();
-
 app.Run();
+
 
 void ApplyMigration()
 {
     using var scope = app.Services.CreateScope();
     var _db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+
     if (_db.Database.GetPendingMigrations().Any())
     {
         _db.Database.Migrate();
