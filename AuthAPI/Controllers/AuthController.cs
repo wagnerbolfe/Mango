@@ -3,6 +3,7 @@ using Microsoft.Extensions.Configuration;
 using System.Threading.Tasks;
 using AuthAPI.Models.Dto;
 using AuthAPI.Services;
+using MessageBus;
 
 namespace AuthAPI.Controllers
 {
@@ -11,21 +12,20 @@ namespace AuthAPI.Controllers
     public class AuthController : ControllerBase
     {
         private readonly IAuthService _authService;
-        //private readonly IMessageBus _messageBus;
+        private readonly IMessageBusService _messageBusService;
         private readonly IConfiguration _configuration;
         protected ResponseDto _response;
-        public AuthController(IAuthService authService, /*IMessageBus messageBus,*/ IConfiguration configuration)
+        public AuthController(IAuthService authService, IMessageBusService messageBusService, IConfiguration configuration)
         {
             _authService = authService;
             _configuration = configuration;
-            //_messageBus = messageBus;
+            _messageBusService = messageBusService;
             _response = new ResponseDto();
         }
 
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] RegistrationRequestDto request)
         {
-
             var errorMessage = await _authService.Register(request);
             if (!string.IsNullOrEmpty(errorMessage))
             {
@@ -33,7 +33,7 @@ namespace AuthAPI.Controllers
                 _response.Message = errorMessage;
                 return BadRequest(_response);
             }
-            //await _messageBus.PublishMessage(model.Email, _configuration.GetValue<string>("TopicAndQueueNames:RegisterUserQueue"));
+            await _messageBusService.PublishMessage(request.Email, _configuration.GetValue<string>("TopicAndQueueNames:RegisterUserQueue"));
             return Ok(_response);
         }
 

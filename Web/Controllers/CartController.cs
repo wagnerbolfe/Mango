@@ -124,7 +124,7 @@ namespace Web.Controllers
         public async Task<IActionResult> EmailCart(CartDto cartDto)
         {
             var cart = await LoadCartDtoBasedOnLoggedInUser();
-            cart.CartHeader.Email = User.Claims.Where(u => u.Type == JwtRegisteredClaimNames.Email)?.FirstOrDefault()?.Value;
+            cart.CartHeader.Email = User.Claims.FirstOrDefault(u => u.Type == JwtRegisteredClaimNames.Email)?.Value;
 
             var response = await _cartService.EmailCart(cart);
             if (response is { IsSuccess: true })

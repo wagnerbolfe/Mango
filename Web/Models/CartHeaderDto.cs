@@ -16,5 +16,7 @@ namespace Web.Models
         public string Phone { get; set; }
         [Required]
         public string Email { get; set; }
+        [Required]
+        public string Address { get; set; }
     }
 }

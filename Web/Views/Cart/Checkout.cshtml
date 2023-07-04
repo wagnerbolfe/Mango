@@ -1,0 +1,113 @@
+﻿@model CartDto
+
+<form method="post">
+    <input asp-for="CartHeader.UserId" hidden />
+    <input asp-for="CartHeader.CartHeaderId" hidden />
+    <input asp-for="CartHeader.CouponCode" hidden />
+    <input asp-for="CartHeader.Discount" hidden />
+    <input asp-for="CartHeader.CartTotal" hidden />
+
+    <div class="card border mt-4 container">
+        <div class="container">
+            <div class="card-header d-flex justify-content-between align-items-center py-3" style="background-color: transparent; border-bottom: 1px solid rgba(0,0,0,0.2);">
+                <div class="col-6">
+                    <h3 class="pt-1"><i class="bi bi-cart"></i>Order Summary</h3>
+                </div>
+                <div class="col-6 text-end">
+                    <a asp-action="CartIndex" asp-controller="Cart" class="btn btn-success" 
+                       style="--bs-btn-padding-y: .70rem; --bs-btn-padding-x: 1.2rem; --bs-btn-font-size: 1.2rem;">Back to Cart
+                    </a>
+                </div>
+            </div>
+            <div class="row justify-content-center pt-3">
+                <div class="col-7">
+                    <div class="row pt-2">
+                        <div class="col-12 py-2">
+                            <input asp-for="CartHeader.Name" placeholder="Name" class="form-control" />
+                            <span asp-validation-for="CartHeader.Name" class="text-danger"></span>
+                        </div>
+                        <div class="col-12 py-2">
+                            <input placeholder="Email" asp-for="CartHeader.Email" class="form-control" />
+                            <span asp-validation-for="CartHeader.Email" class="text-danger"></span>
+                        </div>
+                        <div class="col-12 py-2">
+                            <input class="form-control" asp-for="CartHeader.Phone" placeholder="Phone" />
+                            <span asp-validation-for="CartHeader.Phone" class="text-danger"></span>
+                        </div>
+                        <div class="col-12 py-2">
+                            <input placeholder="Address" asp-for="CartHeader.Address" class="form-control" />
+                            <span asp-validation-for="CartHeader.Address" class="text-danger"></span>
+                        </div>
+                        <div class="col-12 pt-2 d-flex justify-content-center">
+                            <label class="card px-5 pt-3 col-form-label text-center">
+                                <h6 style="color: red">Order will be ready in 30minutes after placing order.<br/> If you place order when restaurant is closed it will be ready next day.</h6>
+                            </label>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="col-5">
+                    <div class="card mt-2">
+                        <div class="card-body">
+                            <div class=" d-none d-lg-block">
+                                <div class="row text-danger">
+                                    <div class="col-6">
+                                        <h6 style="margin-bottom:0">Product Details</h6>
+                                    </div>
+                                    <div class="col-3 d-flex justify-content-center align-items-center">
+                                        <h6 style="margin-bottom:0">Price</h6>
+                                    </div>
+                                    <div class="col-3 d-flex justify-content-center align-items-center">
+                                        <h6 style="margin-bottom:0">Count</h6>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr />
+                            @foreach (var cartObj in Model.CartDetails)
+                            {
+                                    <div class="row h-100">
+                                        <div class="col-6 d-flex align-items-center">
+                                            <p style="font-size:20px; margin-bottom:0">@cartObj.Product.Name</p>
+                                        </div>
+
+                                        <div class="col-3 d-flex justify-content-center align-items-center" style="font-size:11px;">
+                                            <h5 style="font-size:17px; margin-bottom:0"> @cartObj.Product.Price.ToString("c")</h5>
+                                        </div>
+
+                                        <div class="col-3 d-flex justify-content-center align-items-center" style="font-size:11px;">
+                                            <h5 style="font-size:17px; margin-bottom:0"> @cartObj.Count</h5>
+                                        </div>
+                                    </div>
+                                    <hr />
+                            }
+                            <div class="row">
+                                <div class="col-12 text-center pr-4 text-danger">
+                                    <h5>Order Total :  @Model.CartHeader.CartTotal.ToString("c")</h5>
+                                    @if (Model.CartHeader.Discount > 0)
+                                    {
+                                            <span class="text-success"> Order Discount :  @Model.CartHeader.Discount.ToString("c")</span>
+                                    }
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="card-footer">
+                            <div class="row">
+
+                                <div class="col-12 ">
+                                    <button type="submit" class="btn btn-success form-control ">
+                                        <span>Place Order</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+@section Scripts {
+            <partial name="_ValidationScriptsPartial" />
+}

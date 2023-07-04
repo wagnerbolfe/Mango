@@ -1,6 +1,6 @@
 using System;
 using System.Linq;
-using AutoMapper;
+using MessageBus;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
@@ -27,6 +27,7 @@ builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<ICouponService, CouponService>();
+builder.Services.AddScoped<IMessageBusService, MessageBusService>();
 builder.Services.AddScoped<BackendApiAuthenticationHttpClientHandler>();
 
 builder.Services.AddHttpClient("Product", u => u.BaseAddress =

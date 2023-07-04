@@ -2,12 +2,11 @@
 @if (Model.CartHeader != null && Model.CartDetails.Any())
 {
 <form method="post" asp-action="EmailCart">
-    <br />
     <input asp-for="CartHeader.UserId" hidden />
     <input asp-for="CartHeader.CartHeaderId" hidden />
     <div class="">
         <div class="card border mt-4 container">
-            <div class="card-header d-flex justify-content-between align-items-center py-3" style="background-color: transparent">
+            <div class="card-header d-flex justify-content-between align-items-center py-3" style="background-color: transparent; border-bottom: 1px solid rgba(0,0,0,0.2);">
                 <div class="col-6">
                     <h3 class="pt-1"><i class="bi bi-cart"></i> &nbsp; Shopping Cart</h3>
                 </div>
@@ -23,13 +22,13 @@
                         <div class="col-lg-2">
                         </div>
                         <div class="col-lg-5">
-                            Product Details
+                            <h6 style="margin-bottom:0">Product Details</h6>
                         </div>
-                        <div class="col-lg-2">
-                            Price
+                        <div class="col-lg-2 d-flex justify-content-center align-items-center">
+                            <h6 style="margin-bottom:0">Price</h6>
                         </div>
-                        <div class="col-lg-2">
-                            Count
+                        <div class="col-lg-2 d-flex justify-content-center align-items-center">
+                            <h6 style="margin-bottom:0">Count</h6>
                         </div>
                         <div class="col-lg-1">
                         </div>
@@ -105,12 +104,12 @@
                     </div>
                 </div>
             </div>
-            <div class="card-footer d-flex justify-content-end gap-3">
+                <div class="card-footer d-flex justify-content-end gap-3" style="background-color: transparent">
                 <div class="col-3">
                     <button type="submit" class="btn btn-outline-danger form-control">Email Cart</button>
                 </div>
                 <div class="col-3">
-                    <a asp-action="Checkout" class="btn btn-success form-control">Looks Good? </a>
+                    <a asp-action="Checkout" class="btn btn-success form-control">Checkout</a>
                 </div>
             </div>
         </div>

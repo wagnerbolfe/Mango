@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using MessageBus;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -22,10 +23,11 @@ namespace ShoppingCartAPI.Controllers
         private readonly AppDbContext _db;
         private readonly IProductService _productService;
         private readonly ICouponService _couponService;
+        private readonly IMessageBusService _messageBusService;
         private readonly IConfiguration _configuration;
 
         public CartController(AppDbContext db,
-            IMapper mapper, IProductService productService, ICouponService couponService, IConfiguration configuration)
+            IMapper mapper, IProductService productService, ICouponService couponService, IConfiguration configuration, IMessageBusService messageBusService)
         {
             _db = db;
             _productService = productService;
@@ -33,6 +35,7 @@ namespace ShoppingCartAPI.Controllers
             _mapper = mapper;
             _couponService = couponService;
             _configuration = configuration;
+            _messageBusService = messageBusService;
         }
 
         [HttpGet("GetCart/{userId}")]
@@ -95,21 +98,21 @@ namespace ShoppingCartAPI.Controllers
             return _response;
         }
 
-        //[HttpPost("EmailCartRequest")]
-        //public async Task<object> EmailCartRequest([FromBody] CartDto cartDto)
-        //{
-        //    try
-        //    {
-        //        await _messageBus.PublishMessage(cartDto, _configuration.GetValue<string>("TopicAndQueueNames:EmailShoppingCartQueue"));
-        //        _response.Result = true;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        _response.IsSuccess = false;
-        //        _response.Message = ex.ToString();
-        //    }
-        //    return _response;
-        //}
+        [HttpPost("EmailCartRequest")]
+        public async Task<object> EmailCartRequest([FromBody] CartDto cartDto)
+        {
+            try
+            {
+                await _messageBusService.PublishMessage(cartDto, _configuration.GetValue<string>("TopicAndQueueNames:EmailShoppingCartQueue"));
+                _response.Result = true;
+            }
+            catch (Exception ex)
+            {
+                _response.IsSuccess = false;
+                _response.Message = ex.ToString();
+            }
+            return _response;
+        }
 
         [HttpPost("CartUpsert")]
         public async Task<ResponseDto> CartUpsert(CartDto cartDto)

@@ -8,6 +8,7 @@ using System.Linq;
 using AuthAPI.Models;
 using Microsoft.AspNetCore.Identity;
 using AuthAPI.Services;
+using MessageBus;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,6 +26,7 @@ builder.Services.AddControllers();
 
 builder.Services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IMessageBusService, MessageBusService>();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
