@@ -1,0 +1,114 @@
+﻿@model OrderHeaderDto
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using Web.Utility
+<form method="post">
+    <br />
+    <input asp-for="OrderHeaderId" hidden />
+    <div class="container">
+        <div class="card">
+            <div class="card-header bg-dark text-light d-flex justify-content-between align-items-center py-3" border-bottom: 1px solid rgba(0,0,0,0.2);">
+                <div class="col-6 bg">
+                    <h3 class="pt-1"><i class="bi bi-cart"></i> Shopping Cart</h3>
+                </div>
+                <div class="col-6 text-end">
+                    <a asp-action="OrderIndex" asp-controller="Order" class="btn btn-success" 
+                       style="--bs-btn-padding-y: .70rem; --bs-btn-padding-x: 1.2rem; --bs-btn-font-size: 1.2rem;">Back to Orders
+                    </a>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="container rounded p-2">
+                    <div class="row col-12">
+                        <div class="col-7 ps-3 pe-5">
+                            <div>
+                                <label class="control-label" style="font-size:16px;">Name</label>
+                                <input asp-for="Name" class="form-control" />
+                            </div>
+                            <div>
+                                <label class="control-label pt-2" style="font-size:16px;">Phone</label>
+                                <input asp-for="Phone" class="form-control" />
+                            </div>
+                            <div>
+                                <label class="control-label pt-2" style="font-size:16px;">Email</label>
+                                <input asp-for="Email" class="form-control" />
+                            </div>
+                            <div>
+                                <label class="control-label pt-2" style="font-size:16px;">Order Date</label>
+                                <input value="@Model.OrderTime.ToShortDateString()" readonly class="form-control" />
+                            </div>
+
+                            @if (User.IsInRole(StaticDetails.RoleAdmin))
+                            {
+                                <div>
+                                    <label class="control-label pt-2" style="font-size:16px;">Stripe Session</label>
+                                    <input asp-for="StripeSessionId" readonly class="form-control" />
+                                </div>
+                                <div>
+                                    <label class="control-label pt-2" style="font-size:16px;">Payment Intent</label>
+                                    <input asp-for="PaymentIntentId" readonly class="form-control" />
+                                </div>
+                            }
+                            <div>
+                                <label class="control-label pt-2" style="font-size:16px;">Order Status</label>
+                                <input asp-for="Status" readonly class="form-control" />
+                            </div>
+                        </div>
+                        <div class="col-5">
+                            <h4 class="d-flex justify-content-between align-items-center mb-3">
+                                <span>Order Summary</span>
+                            </h4>
+                            <label class="bg-success text-dark text-center form-control my-2" style="font-size:20px;">Order Status - @Model.Status</label>
+
+                            <ul class="list-group mb-3">
+                                @foreach (var detail in Model.OrderDetails)
+                                {
+                                    <li class="list-group-item d-flex justify-content-between p-2">
+                                        <div class="row container">
+                                            <div class="col-8">
+
+                                                <h6 class="my-0">@detail.ProductName</h6>
+                                                    <small class="text-muted">Price : @detail.Price.ToString("c")</small><br />
+                                                    <small class="text-muted">Quantity : @detail.Count</small>
+                                            </div>
+                                            <div class="col-4 text-end">
+                                                <p class="text-success">@((detail.Count * detail.Price).ToString("c"))</p>
+                                            </div>
+                                        </div>
+                                    </li>
+                                }
+                                <li class="list-group-item bg-primary">
+                                    <div class="row container">
+                                        <div class="col-6">
+                                            <h5 class="text-white">TOTAL </h5>
+                                        </div>
+                                        <div class="col-6 text-end">
+                                            <h5 class="text-white">@Model.OrderTotal.ToString("c")</h5>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+
+                            @if (User.IsInRole(StaticDetails.RoleAdmin))
+                            {
+                                @if (Model.Status == StaticDetails.Status_Approved)
+                                {
+                                    <button asp-action="OrderReadyForPickup" asp-route-orderId="@Model.OrderHeaderId" type="submit" class="btn btn-success form-control py-3 my-2">Ready for Pickup</button>
+                                }
+                                @if (Model.Status == StaticDetails.Status_ReadyForPickup)
+                                {
+                                    <button asp-action="CompleteOrder" asp-route-orderId="@Model.OrderHeaderId" type="submit" class="btn btn-success form-control my-1">Complete Order</button>
+                                }
+
+                                if (Model.Status == StaticDetails.Status_Approved || Model.Status == StaticDetails.Status_ReadyForPickup)
+                                {
+                                    <button asp-action="CancelOrder" asp-route-orderId="@Model.OrderHeaderId" type="submit" class="btn btn-danger form-control my-1">Cancel Order</button>
+                                }
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+

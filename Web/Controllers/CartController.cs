@@ -75,16 +75,18 @@ namespace Web.Controllers
         public async Task<IActionResult> Confirmation(int orderId)
         {
             var response = await _orderService.ValidateStripeSession(orderId);
+
             if (response is { IsSuccess: true })
             {
                 var orderHeader = JsonConvert.DeserializeObject<OrderHeaderDto>(Convert.ToString(response.Result) ?? string.Empty);
                 if (orderHeader is { Status: StaticDetails.Status_Approved })
                 {
-                    return View(orderId);
+                    return View(orderHeader);
                 }
             }
+
             //redirect to some error page based on status
-            return View(orderId);
+            return View();
         }
 
         public async Task<IActionResult> Remove(int cartDetailsId)

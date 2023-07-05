@@ -42,15 +42,9 @@ namespace OrderAPI.Controllers
         {
             try
             {
-                IEnumerable<OrderHeader> objList;
-                if (User.IsInRole(StaticDetails.RoleAdmin))
-                {
-                    objList = _db.OrderHeaders.Include(u => u.OrderDetails).OrderByDescending(u => u.OrderHeaderId).ToList();
-                }
-                else
-                {
-                    objList = _db.OrderHeaders.Include(u => u.OrderDetails).Where(u => u.UserId == userId).OrderByDescending(u => u.OrderHeaderId).ToList();
-                }
+                IEnumerable<OrderHeader> objList = User.IsInRole(StaticDetails.RoleAdmin) 
+                    ? _db.OrderHeaders.Include(u => u.OrderDetails).OrderByDescending(u => u.OrderHeaderId).ToList() 
+                    : _db.OrderHeaders.Include(u => u.OrderDetails).Where(u => u.UserId == userId).OrderByDescending(u => u.OrderHeaderId).ToList();
                 _response.Result = _mapper.Map<IEnumerable<OrderHeaderDto>>(objList);
             }
             catch (Exception ex)
@@ -103,6 +97,33 @@ namespace OrderAPI.Controllers
             return _response;
         }
 
+        [Authorize]
+        [HttpPost("UpdateOrderStatus/{orderId:int}")]
+        public async Task<ResponseDto> UpdateOrderStatus(int orderId, [FromBody] string newStatus)
+        {
+            try
+            {
+                var orderHeader = _db.OrderHeaders.First(u => u.OrderHeaderId == orderId);
+                if (newStatus == StaticDetails.Status_Cancelled)
+                {
+                    var options = new RefundCreateOptions
+                    {
+                        Reason = RefundReasons.RequestedByCustomer,
+                        PaymentIntent = orderHeader.PaymentIntentId
+                    };
+
+                    var service = new RefundService();
+                    _response.Result = await service.CreateAsync(options);
+                }
+                orderHeader.Status = newStatus;
+                await _db.SaveChangesAsync();
+            }
+            catch (Exception)
+            {
+                _response.IsSuccess = false;
+            }
+            return _response;
+        }
 
         [Authorize]
         [HttpPost("CreateStripeSession")]
@@ -169,7 +190,6 @@ namespace OrderAPI.Controllers
             return _response;
         }
 
-
         [Authorize]
         [HttpPost("ValidateStripeSession")]
         public async Task<ResponseDto> ValidateStripeSession([FromBody] int orderHeaderId)
@@ -205,35 +225,6 @@ namespace OrderAPI.Controllers
             catch (Exception ex)
             {
                 _response.Message = ex.Message;
-                _response.IsSuccess = false;
-            }
-            return _response;
-        }
-
-
-        [Authorize]
-        [HttpPost("UpdateOrderStatus/{orderId:int}")]
-        public async Task<ResponseDto> UpdateOrderStatus(int orderId, [FromBody] string newStatus)
-        {
-            try
-            {
-                var orderHeader = _db.OrderHeaders.First(u => u.OrderHeaderId == orderId);
-                if (newStatus == StaticDetails.Status_Cancelled)
-                {
-                    var options = new RefundCreateOptions
-                    {
-                        Reason = RefundReasons.RequestedByCustomer,
-                        PaymentIntent = orderHeader.PaymentIntentId
-                    };
-
-                    var service = new RefundService();
-                    _response.Result = await service.CreateAsync(options);
-                }
-                orderHeader.Status = newStatus;
-                await _db.SaveChangesAsync();
-            }
-            catch (Exception)
-            {
                 _response.IsSuccess = false;
             }
             return _response;
