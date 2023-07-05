@@ -16,8 +16,8 @@ namespace Web.Services
         {
             return await _baseService.SendAsync(new RequestDto()
             {
-                ApiType = StartDetail.ApiType.GET,
-                Url = StartDetail.CouponAPIBase + "/api/coupon"
+                ApiType = StaticDetails.ApiType.GET,
+                Url = StaticDetails.CouponAPIBase + "/api/coupon"
             });
         }
 
@@ -25,8 +25,8 @@ namespace Web.Services
         {
             return await _baseService.SendAsync(new RequestDto()
             {
-                ApiType = StartDetail.ApiType.GET,
-                Url = StartDetail.CouponAPIBase + "/api/coupon/GetByCode/" + couponCode
+                ApiType = StaticDetails.ApiType.GET,
+                Url = StaticDetails.CouponAPIBase + "/api/coupon/GetByCode/" + couponCode
             });
         }
 
@@ -34,8 +34,8 @@ namespace Web.Services
         {
             return await _baseService.SendAsync(new RequestDto()
             {
-                ApiType = StartDetail.ApiType.GET,
-                Url = StartDetail.CouponAPIBase + "/api/coupon/" + id
+                ApiType = StaticDetails.ApiType.GET,
+                Url = StaticDetails.CouponAPIBase + "/api/coupon/" + id
             });
         }
 
@@ -43,9 +43,9 @@ namespace Web.Services
         {
             return await _baseService.SendAsync(new RequestDto()
             {
-                ApiType = StartDetail.ApiType.POST,
+                ApiType = StaticDetails.ApiType.POST,
                 Data = couponDto,
-                Url = StartDetail.CouponAPIBase + "/api/coupon"
+                Url = StaticDetails.CouponAPIBase + "/api/coupon"
             });
         }
 
@@ -53,9 +53,9 @@ namespace Web.Services
         {
             return await _baseService.SendAsync(new RequestDto()
             {
-                ApiType = StartDetail.ApiType.PUT,
+                ApiType = StaticDetails.ApiType.PUT,
                 Data = couponDto,
-                Url = StartDetail.CouponAPIBase + "/api/coupon"
+                Url = StaticDetails.CouponAPIBase + "/api/coupon"
             });
         }
 
@@ -63,8 +63,8 @@ namespace Web.Services
         {
             return await _baseService.SendAsync(new RequestDto()
             {
-                ApiType = StartDetail.ApiType.DELETE,
-                Url = StartDetail.CouponAPIBase + "/api/coupon/" + id
+                ApiType = StaticDetails.ApiType.DELETE,
+                Url = StaticDetails.CouponAPIBase + "/api/coupon/" + id
             });
         }
     }

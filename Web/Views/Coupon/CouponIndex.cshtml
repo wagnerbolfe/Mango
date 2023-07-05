@@ -14,7 +14,7 @@
         <div class="row pb-3">
             <div class="col-6">
             </div>
-            @if (User.IsInRole(StartDetail.RoleAdmin))
+            @if (User.IsInRole(StaticDetails.RoleAdmin))
             {
                 <div class="col-6 text-end">
                     <a asp-action="CouponCreate" class="btn btn-outline-primary"><i class="bi bi-plus-square"></i> Create New Coupon</a>

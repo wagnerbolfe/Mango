@@ -16,10 +16,10 @@ namespace Web.Services
         {
             return await _baseService.SendAsync(new RequestDto()
             {
-                ApiType = StartDetail.ApiType.POST,
+                ApiType = StaticDetails.ApiType.POST,
                 Data = productDto,
-                Url = StartDetail.ProductAPIBase + "/api/product",
-                ContentType = StartDetail.ContentType.MultipartFormData
+                Url = StaticDetails.ProductAPIBase + "/api/product",
+                ContentType = StaticDetails.ContentType.MultipartFormData
             });
         }
 
@@ -27,8 +27,8 @@ namespace Web.Services
         {
             return await _baseService.SendAsync(new RequestDto()
             {
-                ApiType = StartDetail.ApiType.DELETE,
-                Url = StartDetail.ProductAPIBase + "/api/product/" + id
+                ApiType = StaticDetails.ApiType.DELETE,
+                Url = StaticDetails.ProductAPIBase + "/api/product/" + id
             });
         }
 
@@ -36,8 +36,8 @@ namespace Web.Services
         {
             return await _baseService.SendAsync(new RequestDto()
             {
-                ApiType = StartDetail.ApiType.GET,
-                Url = StartDetail.ProductAPIBase + "/api/product"
+                ApiType = StaticDetails.ApiType.GET,
+                Url = StaticDetails.ProductAPIBase + "/api/product"
             });
         }
 
@@ -45,8 +45,8 @@ namespace Web.Services
         {
             return await _baseService.SendAsync(new RequestDto()
             {
-                ApiType = StartDetail.ApiType.GET,
-                Url = StartDetail.ProductAPIBase + "/api/product/" + id
+                ApiType = StaticDetails.ApiType.GET,
+                Url = StaticDetails.ProductAPIBase + "/api/product/" + id
             });
         }
 
@@ -54,10 +54,10 @@ namespace Web.Services
         {
             return await _baseService.SendAsync(new RequestDto()
             {
-                ApiType = StartDetail.ApiType.PUT,
+                ApiType = StaticDetails.ApiType.PUT,
                 Data = productDto,
-                Url = StartDetail.ProductAPIBase + "/api/product",
-                ContentType = StartDetail.ContentType.MultipartFormData
+                Url = StaticDetails.ProductAPIBase + "/api/product",
+                ContentType = StaticDetails.ContentType.MultipartFormData
             });
         }
     }

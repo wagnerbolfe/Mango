@@ -16,9 +16,9 @@ namespace Web.Services
         {
             return await _baseService.SendAsync(new RequestDto()
             {
-                ApiType = StartDetail.ApiType.POST,
+                ApiType = StaticDetails.ApiType.POST,
                 Data = registrationRequestDto,
-                Url = StartDetail.AuthAPIBase + "/api/auth/AssignRole"
+                Url = StaticDetails.AuthAPIBase + "/api/auth/AssignRole"
             });
         }
 
@@ -26,9 +26,9 @@ namespace Web.Services
         {
             return await _baseService.SendAsync(new RequestDto()
             {
-                ApiType = StartDetail.ApiType.POST,
+                ApiType = StaticDetails.ApiType.POST,
                 Data = loginRequestDto,
-                Url = StartDetail.AuthAPIBase + "/api/auth/login"
+                Url = StaticDetails.AuthAPIBase + "/api/auth/login"
             }, withBearer: false);
         }
 
@@ -36,9 +36,9 @@ namespace Web.Services
         {
             return await _baseService.SendAsync(new RequestDto()
             {
-                ApiType = StartDetail.ApiType.POST,
+                ApiType = StaticDetails.ApiType.POST,
                 Data = registrationRequestDto,
-                Url = StartDetail.AuthAPIBase + "/api/auth/register"
+                Url = StaticDetails.AuthAPIBase + "/api/auth/register"
             }, withBearer: false);
         }
     }

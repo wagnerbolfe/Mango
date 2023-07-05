@@ -16,9 +16,9 @@ namespace Web.Services
         {
             return await _baseService.SendAsync(new RequestDto()
             {
-                ApiType = StartDetail.ApiType.POST,
+                ApiType = StaticDetails.ApiType.POST,
                 Data = cartDto,
-                Url = StartDetail.ShoppingCartAPIBase + "/api/cart/ApplyCoupon"
+                Url = StaticDetails.ShoppingCartAPIBase + "/api/cart/ApplyCoupon"
             });
         }
 
@@ -26,9 +26,9 @@ namespace Web.Services
         {
             return await _baseService.SendAsync(new RequestDto()
             {
-                ApiType = StartDetail.ApiType.POST,
+                ApiType = StaticDetails.ApiType.POST,
                 Data = cartDto,
-                Url = StartDetail.ShoppingCartAPIBase + "/api/cart/EmailCartRequest"
+                Url = StaticDetails.ShoppingCartAPIBase + "/api/cart/EmailCartRequest"
             });
         }
 
@@ -36,8 +36,8 @@ namespace Web.Services
         {
             return await _baseService.SendAsync(new RequestDto()
             {
-                ApiType = StartDetail.ApiType.GET,
-                Url = StartDetail.ShoppingCartAPIBase + "/api/cart/GetCart/" + userId
+                ApiType = StaticDetails.ApiType.GET,
+                Url = StaticDetails.ShoppingCartAPIBase + "/api/cart/GetCart/" + userId
             });
         }
 
@@ -45,9 +45,9 @@ namespace Web.Services
         {
             return await _baseService.SendAsync(new RequestDto()
             {
-                ApiType = StartDetail.ApiType.POST,
+                ApiType = StaticDetails.ApiType.POST,
                 Data = cartDetailsId,
-                Url = StartDetail.ShoppingCartAPIBase + "/api/cart/RemoveCart"
+                Url = StaticDetails.ShoppingCartAPIBase + "/api/cart/RemoveCart"
             });
         }
 
@@ -55,9 +55,9 @@ namespace Web.Services
         {
             return await _baseService.SendAsync(new RequestDto()
             {
-                ApiType = StartDetail.ApiType.POST,
+                ApiType = StaticDetails.ApiType.POST,
                 Data = cartDto,
-                Url = StartDetail.ShoppingCartAPIBase + "/api/cart/CartUpsert"
+                Url = StaticDetails.ShoppingCartAPIBase + "/api/cart/CartUpsert"
             });
         }
     }

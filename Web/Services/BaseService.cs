@@ -6,7 +6,7 @@ using System.Text;
 using System;
 using System.Threading.Tasks;
 using Web.Models;
-using static Web.Utility.StartDetail;
+using static Web.Utility.StaticDetails;
 using Newtonsoft.Json;
 
 namespace Web.Services
@@ -29,7 +29,7 @@ namespace Web.Services
                 var client = _httpClientFactory.CreateClient("MangoAPI");
                 HttpRequestMessage message = new();
                 message.Headers.Add("Accept",
-                    requestDto.ContentType == Utility.StartDetail.ContentType.MultipartFormData
+                    requestDto.ContentType == Utility.StaticDetails.ContentType.MultipartFormData
                         ? "*/*"
                         : "application/json");
 
@@ -41,7 +41,7 @@ namespace Web.Services
 
                 message.RequestUri = new Uri(requestDto.Url);
 
-                if (requestDto.ContentType == Utility.StartDetail.ContentType.MultipartFormData)
+                if (requestDto.ContentType == Utility.StaticDetails.ContentType.MultipartFormData)
                 {
                     var content = new MultipartFormDataContent();
 

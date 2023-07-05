@@ -1,6 +1,6 @@
 ﻿namespace OrderAPI.Utility
 {
-    public class StartDetails
+    public class StaticDetails
     {
         public const string Status_Pending = "Pending";
         public const string Status_Approved = "Approved";

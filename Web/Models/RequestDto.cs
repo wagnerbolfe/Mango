@@ -1,4 +1,4 @@
-﻿using static Web.Utility.StartDetail;
+﻿using static Web.Utility.StaticDetails;
 
 namespace Web.Models
 {

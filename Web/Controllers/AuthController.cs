@@ -60,8 +60,8 @@ namespace Web.Controllers
         {
             var roleList = new List<SelectListItem>
             {
-                new() {Text=StartDetail.RoleAdmin,Value=StartDetail.RoleAdmin},
-                new() {Text=StartDetail.RoleCustomer,Value=StartDetail.RoleCustomer},
+                new() {Text=StaticDetails.RoleAdmin,Value=StaticDetails.RoleAdmin},
+                new() {Text=StaticDetails.RoleCustomer,Value=StaticDetails.RoleCustomer},
             };
 
             ViewBag.RoleList = roleList;
@@ -77,7 +77,7 @@ namespace Web.Controllers
             {
                 if (string.IsNullOrEmpty(obj.Role))
                 {
-                    obj.Role = StartDetail.RoleCustomer;
+                    obj.Role = StaticDetails.RoleCustomer;
                 }
                 var assingRole = await _authService.AssignRoleAsync(obj);
                 if (assingRole is { IsSuccess: true })
@@ -93,8 +93,8 @@ namespace Web.Controllers
 
             var roleList = new List<SelectListItem>
             {
-                new() {Text=StartDetail.RoleAdmin,Value=StartDetail.RoleAdmin},
-                new() {Text=StartDetail.RoleCustomer,Value=StartDetail.RoleCustomer},
+                new() {Text=StaticDetails.RoleAdmin,Value=StaticDetails.RoleAdmin},
+                new() {Text=StaticDetails.RoleCustomer,Value=StaticDetails.RoleCustomer},
             };
 
             ViewBag.RoleList = roleList;
