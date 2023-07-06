@@ -1,12 +1,13 @@
 ﻿@model ProductDto
 
 <form asp-action="ProductCreate" enctype="multipart/form-data">
-    <br />
-    <div class="container rounded border p-3">
-        <h1 class="text-center">Create Product</h1>
-
-        <hr />
-        <div class="row mx-auto col-8">
+    <div class="card shadow border-0 mt-4">
+        <div class="card-header bg-secondary bg-gradient ml-0 py-3 d-flex justify-content-between">
+            <div class="row">
+                <h1 class="text-white py-1" style="margin: 0">Create Product</h1>
+            </div>
+        </div>
+        <div class="row mx-auto p-4" style="width: 60%">
             <div>
                 <label class="control-label pt-2" style="font-size:20px;"> Name</label>
             </div>

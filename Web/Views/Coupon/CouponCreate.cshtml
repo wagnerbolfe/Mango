@@ -1,12 +1,13 @@
 ﻿@model CouponDto
 
 <form asp-action="CouponCreate">
-    <br />
-    <div class="container rounded border p-3">
-        <h1 class="text-center">Create Coupon</h1>
-
-        <hr />
-        <div class="row mx-auto col-8">
+    <div class="card shadow border-0 mt-4">
+        <div class="card-header bg-secondary bg-gradient ml-0 py-3 d-flex justify-content-between">
+            <div class="row">
+                <h1 class="text-white py-1" style="margin: 0">Create Coupon</h1>
+            </div>
+        </div>
+        <div class="row mx-auto p-4" style="width: 60%">
             <div>
                 <label class="control-label pt-2" style="font-size:20px;">Coupon Code</label>
             </div>
@@ -30,7 +31,7 @@
                 <input asp-for="MinAmount" class="form-control" />
                 <span asp-validation-for="MinAmount" class="text-danger"></span>
             </div>
-            
+
             <div class="d-flex justify-content-between pt-4">
                 <div class="col-5">
                     <a asp-action="CouponIndex" class="btn-primary btn form-control ">Back to List</a>
@@ -39,15 +40,11 @@
                     <input type="submit" value="Create" class="btn btn-success form-control" />
                 </div>
             </div>
-
-        </div>
-
-        <div>
         </div>
     </div>
 </form>
 
 @section Scripts
-{
-    <partial name="_ValidationScriptsPartial"/>
+    {
+        <partial name="_ValidationScriptsPartial"/>
 }

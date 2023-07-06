@@ -98,7 +98,7 @@ namespace Web.Controllers
             return View(productDto);
         }
 
-        public IActionResult Privacy()
+        public IActionResult Contact()
         {
             return View();
         }
