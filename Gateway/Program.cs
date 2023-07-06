@@ -17,7 +17,7 @@ builder.Services.AddOcelot();
 
 var app = builder.Build();
 
-app.MapGet("/", () => "Hello World!");
+app.MapGet("/", () => "Ocelot Gateway");
 
 app.UseOcelot().GetAwaiter().GetResult();
 

@@ -117,7 +117,7 @@ namespace Web.Controllers
         public async Task<IActionResult> RemoveCoupon(CartDto cartDto)
         {
             cartDto.CartHeader.CouponCode = "";
-            var response = await _cartService.ApplyCouponAsync(cartDto);
+            ResponseDto? response = await _cartService.ApplyCouponAsync(cartDto);
             if (response is { IsSuccess: true })
             {
                 TempData["success"] = "Cart updated successfully";

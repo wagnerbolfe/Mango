@@ -78,7 +78,6 @@ namespace ShoppingCartAPI.Controllers
             return _response;
         }
 
-
         [HttpPost("ApplyCoupon")]
         public async Task<object> ApplyCoupon([FromBody] CartDto cartDto)
         {
